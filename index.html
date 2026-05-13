@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil Siswa BeEC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Fredoka', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #FADADD, #A0D8EF);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #BFA2DB;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .nav button {
+      background: #FADADD;
+      border: none;
+      color: #5A3E70;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .nav button:hover {
+      transform: scale(1.08);
+      background: #F8BBD0;
+      color: white;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #BFA2DB;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 16px;
+    }
+
+    .level {
+      padding: 4px 10px;
+      background: #BFA2DB;
+      color: white;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .stat {
+      margin: 15px 0;
+    }
+
+    .bar-bg {
+      background: #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 24px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      color: white;
+      padding-left: 10px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+    }
+
+    .tasks {
+      margin-top: 30px;
+    }
+
+    .task {
+      background: #FFE3EC;
+      padding: 12px;
+      border-left: 5px solid #F8BBD0;
+      margin-bottom: 12px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .info {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Profil Siswa</h1>
+
+  <div class="nav">
+    <button onclick="showPage('profile')">Dashboard</button>
+    <button onclick="showPage('alur')">Alur Belajar</button>
+    <button onclick="showPage('tasks')">QUIZ</button>
+    <button onclick="showPage('stats')">Statistik</button>
+    <button onclick="showPage('belajar')">Tools</button>
+    <!-- <button onclick="alert('Sampai jumpa!')">Keluar</button> -->
+  </div>
+
+  <!-- PROFIL -->
+  <div id="profile" class="page-section">
+    <div class="profile-header">
+      <img src="logo.jpg" alt="Foto Siswa" class="profile-pic">
+      <h2 id="student-name">Geistlich Qierra Arode</h2>
+    </div>
+
+    <div class="info"><strong>Usia:</strong> <span id="student-age">6 Tahun</span></div>
+    <div class="info"><strong>Level:</strong> <span class="level" id="student-level">? ? ? ?</span></div>
+    <div class="info"><strong>Hari Belajar:</strong> <span class="level" id="student-level">Selasa & Kamis</span></div>
+    <div class="info"><strong>Jam Belajar:</strong> <span class="level" id="student-level">17.00 WITA</span></div>
+  </div>
+
+  <!-- TUGAS -->
+  <div id="alur" class="page-section hidden">
+    <h2>Alur Belajar</h2>
+    <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses alur belajar lebih baik . . .</div> -->
+    <div class="task">Ikuti Alur Belajar untuk mendapat pembelajaran yang maksimal...</div>
+    <div class="task">1.1. Cara Berkenalan: <a href="perkenalan.html">klik disini</a></div>
+    <div class="task">1.2. Cara memberi salam: <a href="memberi-salam.html">klik disini</a></div>
+    <div class="task">1.3. Bagian-bagian tubuh: <a href="bagian-tubuh.html">klik disini</a></div>
+    <div class="task">1.4. Latihan Alfabet: <a href="beec-game-edukasi-alfabet-satu/index.html">klik disini</a></div>
+  </div>
+
+  <div id="tasks" class="page-section hidden">
+    <h2>QUIZ</h2>
+    <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Quiz . . .</div> -->
+    <div class="task">Mainkan Quiz untuk meningkatkan kemampuanmu secara mandiri . . .</div>
+    <div class="task">QUIZ Free Trial: <a href="beec-quiz-freetrial/index.html">klik di sini</a></div>
+    <!-- <div class="task">1.1. QUIZ 1: <a href="beec-quiz-satu/index.html">klik di sini</a></div> -->
+    <!-- <div class="task">1.2. Screenshot hasil Quiz 1 dan kirim ke nomor Admin.</div> -->
+  </div>
+
+  <!-- STATISTIK -->
+  <div id="stats" class="page-section hidden">
+    <h2>Statistik Karakter</h2>
+    <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Statistik.......</div>
+    <div class="stat">
+      <label>Intelegent</label>
+      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 17%; background: #BFA2DB;">17/100</div></div> -->
+    </div>
+    <div class="stat">
+      <label>Strength</label>
+      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 12%; background: #FADADD;">12/100</div></div> -->
+    </div>
+    <div class="stat">
+      <label>Agility</label>
+      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 1%; background: #A0D8EF;">1/100</div></div> -->
+    </div>
+  </div>
+
+  <!-- Belajar -->
+   <div id="belajar" class="page-section hidden">
+    <div class="task">Lakukan tes kemampuan untuk mengakses Tools....</div>
+    <!-- <div class="task">Tools akan di-update sesuai kebutuhan....</div> -->
+    <!-- <label>Akor Gitar</label>
+    <div class="chord">
+      <a href="akor-gitar/chord.html">Play</a>
+    </div>
+    <label>Tunning Gitar</label>
+    <div class="tuner">
+      <a href="tuning/tuner.html">Play</a>
+    </div>
+    <label>Lagu-lagu</label>
+    <div class="songs">
+      <a href="songs/lirik.html">Play</a>
+    </div>
+   </div> -->
+</div>
+
+<script>
+  function showPage(pageId) {
+    const pages = document.querySelectorAll('.page-section');
+    pages.forEach(page => page.classList.add('hidden'));
+    document.getElementById(pageId).classList.remove('hidden');
+  }
+</script>
+
+</body>
+</html>

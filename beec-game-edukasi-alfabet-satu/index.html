@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabet Game</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    color:white;
+}
+
+#game{
+    width:430px;
+    max-width:95%;
+    background:linear-gradient(to bottom,#020617,#1e3a8a);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+
+header{
+    padding:20px;
+    text-align:center;
+}
+
+h1{
+    font-size:36px;
+    margin-bottom:15px;
+}
+
+#topbar{
+    display:flex;
+    justify-content:space-around;
+    margin-bottom:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#controls{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+button.levelBtn{
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    background:orange;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button.levelBtn:hover{
+    transform:scale(1.05);
+}
+
+#gameArea{
+    position:relative;
+    width:100%;
+    height:650px;
+    background:
+    radial-gradient(circle at top,#1d4ed8,#0f172a);
+    overflow:hidden;
+}
+
+.letter{
+    position:absolute;
+    width:65px;
+    height:65px;
+    border-radius:18px;
+    background:white;
+    color:#111;
+    font-size:34px;
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:0.2s;
+    user-select:none;
+}
+
+.letter:hover{
+    transform:scale(1.1);
+}
+
+.correct{
+    background:#22c55e !important;
+    color:white;
+    animation:pop .3s;
+}
+
+.wrong{
+    background:#ef4444 !important;
+    color:white;
+    animation:shake .3s;
+}
+
+@keyframes pop{
+    0%{transform:scale(0.5);}
+    100%{transform:scale(1);}
+}
+
+@keyframes shake{
+    0%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    100%{transform:translateX(0);}
+}
+
+#rocket{
+    position:absolute;
+    width:90px;
+    top:20px;
+    left:20px;
+    transition:0.4s;
+    z-index:2;
+}
+
+.star{
+    position:absolute;
+    color:gold;
+    animation:twinkle 2s infinite;
+}
+
+@keyframes twinkle{
+    0%{opacity:0.3;}
+    50%{opacity:1;}
+    100%{opacity:0.3;}
+}
+
+#status{
+    text-align:center;
+    padding:18px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+#leaderboard{
+    text-align:center;
+    padding-bottom:20px;
+    font-size:22px;
+}
+
+#gameOver{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10;
+}
+
+#gameOver h2{
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+#restartBtn{
+    padding:15px 30px;
+    font-size:22px;
+    border:none;
+    border-radius:15px;
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<header>
+
+<h1>🚀 Alphabet Game</h1>
+
+<div id="topbar">
+<div>⭐ Score: <span id="score">0</span></div>
+<div>❤️ Nyawa: <span id="life">3</span></div>
+<div>🔥 Combo: <span id="combo">0</span></div>
+</div>
+
+<div id="controls">
+<button class="levelBtn" onclick="setLevel('easy')">Easy</button>
+<button class="levelBtn" onclick="setLevel('medium')">Medium</button>
+<button class="levelBtn" onclick="setLevel('hard')">Hard</button>
+</div>
+
+</header>
+
+<div id="gameArea">
+
+<img id="rocket"
+src="rocket.png">
+
+<div id="gameOver">
+<h2>GAME OVER</h2>
+<button id="restartBtn" onclick="restartGame()">Main Lagi</button>
+</div>
+
+</div>
+
+<div id="status">Cari huruf A</div>
+
+<div id="leaderboard">
+🏆 Best Score:
+<span id="bestScore">0</span>
+</div>
+
+</div>
+
+<script>
+
+const alphabet =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+const gameArea =
+document.getElementById("gameArea");
+
+const rocket =
+document.getElementById("rocket");
+
+const scoreEl =
+document.getElementById("score");
+
+const comboEl =
+document.getElementById("combo");
+
+const lifeEl =
+document.getElementById("life");
+
+const statusEl =
+document.getElementById("status");
+
+const bestScoreEl =
+document.getElementById("bestScore");
+
+let current = 0;
+let score = 0;
+let combo = 0;
+let life = 3;
+let level = "easy";
+
+const best =
+localStorage.getItem("alphabetBest");
+
+if(best){
+    bestScoreEl.innerText = best;
+}
+
+function createStars(){
+
+    for(let i=0;i<40;i++){
+
+        const star =
+        document.createElement("div");
+
+        star.className = "star";
+        star.innerHTML = "⭐";
+
+        star.style.left =
+        Math.random()*100 + "%";
+
+        star.style.top =
+        Math.random()*100 + "%";
+
+        star.style.fontSize =
+        (10 + Math.random()*15)+"px";
+
+        gameArea.appendChild(star);
+    }
+}
+
+createStars();
+
+function setLevel(lv){
+    level = lv;
+}
+
+function shuffle(array){
+
+    for(let i=array.length-1;i>0;i--){
+
+        let j =
+        Math.floor(Math.random()*(i+1));
+
+        [array[i],array[j]] =
+        [array[j],array[i]];
+    }
+
+}
+
+function createLetters(){
+
+    document
+    .querySelectorAll(".letter")
+    .forEach(el=>el.remove());
+
+    let letters = [];
+
+    letters.push(alphabet[current]);
+
+    let total = 8;
+
+    if(level==="medium") total=12;
+    if(level==="hard") total=16;
+
+    while(letters.length < total){
+
+        let random =
+        alphabet[
+        Math.floor(
+        Math.random()*alphabet.length
+        )];
+
+        if(!letters.includes(random)){
+            letters.push(random);
+        }
+    }
+
+    shuffle(letters);
+
+    const cols = 4;
+
+    letters.forEach((letter,index)=>{
+
+        const div =
+        document.createElement("div");
+
+        div.className = "letter";
+
+        div.innerText = letter;
+
+        const row =
+        Math.floor(index / cols);
+
+        const col =
+        index % cols;
+
+        div.style.left =
+        (25 + col*95)+"px";
+
+        div.style.top =
+        (80 + row*100)+"px";
+
+        div.onclick =
+        ()=>checkLetter(div,letter,index);
+
+        gameArea.appendChild(div);
+
+    });
+
+}
+
+function moveRocket(index){
+
+    const cols = 4;
+
+    const row =
+    Math.floor(index / cols);
+
+    const col =
+    index % cols;
+
+    rocket.style.left =
+    (25 + col*95)+"px";
+
+    rocket.style.top =
+    (5 + row*100)+"px";
+
+}
+
+function speak(text){
+
+    const speech =
+    new SpeechSynthesisUtterance(text);
+
+    speech.lang = "en-US";
+
+    speech.rate = 0.9;
+
+    speechSynthesis.speak(speech);
+
+}
+
+function checkLetter(el,letter,index){
+
+    speak(letter);
+
+    if(letter === alphabet[current]){
+
+        el.classList.add("correct");
+
+        moveRocket(index);
+
+        combo++;
+
+        score += 10 + combo;
+
+        current++;
+
+        if(current >= alphabet.length){
+
+            setTimeout(()=>{
+                alert("🎉 KAMU MENANG!");
+                restartGame();
+            },300);
+
+            return;
+        }
+
+        updateUI();
+
+        setTimeout(()=>{
+            createLetters();
+        },300);
+
+    }else{
+
+        el.classList.add("wrong");
+
+        combo = 0;
+
+        life--;
+
+        updateUI();
+
+        if(life <= 0){
+
+            gameOver();
+
+        }
+
+    }
+
+}
+
+function updateUI(){
+
+    scoreEl.innerText = score;
+    comboEl.innerText = combo;
+    lifeEl.innerText = life;
+
+    statusEl.innerText =
+    "Cari huruf " + alphabet[current];
+
+}
+
+function gameOver(){
+
+    document
+    .getElementById("gameOver")
+    .style.display = "flex";
+
+    const best =
+    localStorage.getItem("alphabetBest") || 0;
+
+    if(score > best){
+
+        localStorage.setItem(
+        "alphabetBest",
+        score
+        );
+
+        bestScoreEl.innerText = score;
+    }
+
+}
+
+function restartGame(){
+
+    current = 0;
+    score = 0;
+    combo = 0;
+    life = 3;
+
+    rocket.style.left = "20px";
+    rocket.style.top = "20px";
+
+    document
+    .getElementById("gameOver")
+    .style.display = "none";
+
+    updateUI();
+
+    createLetters();
+
+}
+
+updateUI();
+createLetters();
+
+</script>
+
+</body>
+</html
