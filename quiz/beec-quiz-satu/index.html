@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Education Quiz</title>
+
+<!-- Screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: url(bg1.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+}
+
+/* ===== CARD ===== */
+.card {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: fadeIn .4s ease;
+}
+
+/* ===== TITLE ===== */
+.title {
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+/* ===== INPUT ===== */
+.input-box {
+    display:flex;
+    background:#f1f1f1;
+    border-radius:12px;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.input-box span {
+    margin-right:8px;
+}
+
+.input-box input {
+    border:none;
+    outline:none;
+    background:transparent;
+    flex:1;
+}
+
+/* ===== BUTTON ===== */
+button {
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    color:white;
+    background: linear-gradient(135deg,#ff7e5f,#ff3f34);
+    margin-top:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover {
+    transform:scale(1.05);
+}
+
+/* ===== QUESTION ===== */
+#question {
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+/* ===== ANSWERS ===== */
+.answer {
+    background:#eee;
+    padding:12px;
+    border-radius:10px;
+    margin:8px 0;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.answer:hover {
+    background:#ddd;
+}
+
+/* ===== PROGRESS ===== */
+.progress {
+    height:8px;
+    background:#ddd;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.bar {
+    height:8px;
+    background:green;
+    width:0%;
+    border-radius:10px;
+}
+
+/* ===== FEEDBACK ===== */
+#feedback {
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* ===== RESULT ===== */
+.result {
+    text-align:center;
+}
+
+/* ===== HIDDEN ===== */
+.hidden { display:none; }
+
+/* ===== ANIMASI ===== */
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- START -->
+<div id="start" class="card">
+    <div class="title">🎵 English Education Game</div>
+
+    <div class="input-box">
+        <span>👤</span>
+        <input type="text" id="name" placeholder="Masukkan nama kamu">
+    </div>
+
+    <button onclick="startGame()">Mulai Game</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="card hidden">
+    <div class="progress"><div id="bar" class="bar"></div></div>
+
+    <div id="question"></div>
+    <div id="media"></div>
+    <div id="answers"></div>
+    <div id="feedback"></div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="card hidden result">
+    <h2>🎉 Hasil Akhir</h2>
+    <p id="player"></p>
+    <p id="score"></p>
+    <p id="grade"></p>
+
+    <button onclick="screenshot()">📸 Screenshot</button>
+    <button onclick="shareWA()">📲 Kirim WA</button>
+</div>
+
+</div>
+
+<!-- SOUND -->
+<audio id="correct" src="audio/benar2.mp3"></audio>
+<audio id="wrong" src="audio/salah.mp3"></audio>
+
+<script>
+let player="",current=0,score=0;
+
+let questions=[
+{q:"This is a noun. What is this?",img:"img/bone.png",a:["Bone","Brush","Cat"],c:0},
+{q:"This is a noun. What is this?",img:"img/brush.png",a:["Bone","Brush","Cat"],c:1},
+{q:"This is a noun. What is this?",img:"img/cat.png",a:["Bone","Brush","Cat"],c:2},
+{q:"This is a noun. What is this?",img:"img/ear.png",a:["Ear","Eyes","Hands"],c:0},
+{q:"This is a noun. What is this?",img:"img/eyes.png",a:["Ear","Eyes","Hands"],c:1},
+{q:"This is a noun. What is this?",img:"img/hands.png",a:["Ear","Eyes","Hands"],c:2},
+{q:"This is a noun. What is this?",img:"img/head.png",a:["Head","Legs","Milk"],c:0},
+{q:"This is a noun. What is this?",img:"img/legs.png",a:["Head","Legs","Milk"],c:1},
+// {q:"This is a noun. What is this?",img:"img/milk.png",a:["Head","Legs","Milk"],c:2},
+{q:"This is a noun. What is this?",img:"img/mouse.png",a:["Mouse","Nose","Skin"],c:0},
+{q:"This is a noun. What is this?",img:"img/nose.png",a:["Mouse","Nose","Skin"],c:1},
+{q:"This is a noun. What is this?",img:"img/skin.png",a:["Mouse","Nose","Skin"],c:2},
+{q:"This is a noun. What is this?",img:"img/teeth.png",a:["Teeth","Tongue","Chair"],c:0},
+{q:"This is a noun. What is this?",img:"img/tongue.png",a:["Teeth","Tongue","Chair"],c:1},
+{q:"This is a noun. What is this?",img:"img/chair.png",a:["Teeth","Tongue","Chair"],c:2},
+
+// {q:"This is a verb. What is this?",audio:"audio/",a:["C","D","E"],c:0},
+
+{q:"Parts of Speech adalah. . .",a:["Kelompok kata","kelompok orang","Kelompok hewan"],c:0},
+{q:"Di bawah ini yang masuk parts of speech adalah. . .",a:["Noun - Verb - Adjective - Adverb","Dog - Cat - Bird - Lion","Go - Went - Gone"],c:0},
+{q:"Noun adalah. . .",a:["Kata benda","Kata sifat","Kata kerja"],c:0},
+{q:"Yang termasuk Noun adalah. . .",a:["Book","Go","Small"],c:0},
+{q:"Yang termasuk Noun adalah. . .",a:["School","Go","Small"],c:0},
+{q:"Yang termasuk Noun adalah. . .",a:["Run","Sister","Small"],c:1},
+{q:"Yang termasuk Noun adalah. . .",a:["Walk","Cat","Small"],c:1},
+{q:"Yang termasuk Noun adalah. . .",a:["Walk","Home","Happy"],c:1},
+{q:"Verb adalah. . .",a:["Kata benda","Kata kerja","Kata keterangan"],c:1},
+{q:"Yang termasuk Verb adalah. . .",a:["Teacher","Eat","Outside"],c:1},
+{q:"Yang termasuk Verb adalah. . .",a:["Student","Read","Outside"],c:1},
+{q:"Yang termasuk Verb adalah. . .",a:["Sleep","House","Tomorrow"],c:0},
+{q:"Yang termasuk Verb adalah. . .",a:["Write","Mother","Always"],c:0},
+{q:"Yang termasuk Verb adalah. . .",a:["Father","Yesterday","Wash"],c:2},
+{q:"Adjective adalah. . .",a:["Kata benda","Kata kerja","Kata sifat"],c:2},
+{q:"Yang termasuk Adjective adalah. . .",a:["Brother","Wash","Beautiful"],c:2},
+{q:"Yang termasuk Adjective adalah. . .",a:["Big","Study","Pencil"],c:0},
+{q:"Yang termasuk Adjective adalah. . .",a:["Strong","Drink","Chair"],c:0},
+{q:"Yang termasuk Adjective adalah. . .",a:["Jump","Smart","Eyes"],c:1},
+{q:"Yang termasuk Adjective adalah. . .",a:["Speak","Quickly","Tall"],c:2},
+{q:"Adverb adalah. . .",a:["Kata benda","Kata kerja","Kata keterangan"],c:2},
+{q:"Yang termasuk Adverb adalah. . .",a:["Table","Work","Sometimes"],c:2},
+{q:"Yang termasuk Adverb adalah. . .",a:["Table","Work","There"],c:2},
+{q:"Yang termasuk Adverb adalah. . .",a:["Car","Today","Sing"],c:1},
+{q:"Yang termasuk Adverb adalah. . .",a:["Play","Often","Rich"],c:1},
+{q:"Yang termasuk Adverb adalah. . .",a:["Here","Phone","Clean"],c:0}
+];
+
+function startGame(){
+    player=document.getElementById("name").value;
+    if(player==""){alert("Isi nama dulu!");return;}
+
+    questions.sort(()=>Math.random()-0.5);
+
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
+
+    load();
+}
+
+function load(){
+    let q=questions[current];
+
+    document.getElementById("question").innerText=q.q;
+    document.getElementById("media").innerHTML="";
+    document.getElementById("feedback").innerText="";
+
+    if(q.img){
+        document.getElementById("media").innerHTML=`<img src="${q.img}" width="120">`;
+    }
+
+    if(q.audio){
+        document.getElementById("media").innerHTML=`<audio controls src="${q.audio}"></audio>`;
+    }
+
+    let ans=document.getElementById("answers");
+    ans.innerHTML="";
+
+    q.a.forEach((text,i)=>{
+        let div=document.createElement("div");
+        div.className="answer";
+        div.innerText=text;
+        div.onclick=()=>check(i);
+        ans.appendChild(div);
+    });
+
+    updateBar();
+}
+
+function check(i){
+    let q=questions[current];
+    let answers=document.querySelectorAll(".answer");
+
+    answers.forEach(a=>a.style.pointerEvents="none");
+
+    if(i===q.c){
+        score++;
+        answers[i].style.background="green";
+        feedback("✅ Benar!");
+        document.getElementById("correct").play();
+    }else{
+        answers[i].style.background="red";
+        answers[q.c].style.background="green";
+        feedback("❌ Salah! Jawaban: "+q.a[q.c]);
+        document.getElementById("wrong").play();
+    }
+
+    setTimeout(()=>{
+        current++;
+        if(current<questions.length){
+            load();
+        }else{
+            result();
+        }
+    },1500);
+}
+
+function feedback(text){
+    document.getElementById("feedback").innerText=text;
+}
+
+function updateBar(){
+    let p=(current/questions.length)*100;
+    document.getElementById("bar").style.width=p+"%";
+}
+
+function result(){
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+
+    document.getElementById("player").innerText="Nama: "+player;
+    document.getElementById("score").innerText="Skor: "+score+"/"+questions.length;
+
+    let g="C";
+    if(score>=30) g="B";
+    if(score>=35) g="A";
+
+    document.getElementById("grade").innerText="Grade: "+g;
+}
+
+function screenshot(){
+    html2canvas(document.getElementById("result")).then(c=>{
+        let link=document.createElement("a");
+        link.download="hasil.png";
+        link.href=c.toDataURL();
+        link.click();
+    });
+}
+
+function shareWA(){
+    let text=`Saya ${player} mendapat skor ${score}/${questions.length} di Quiz Musik 🎵`;
+    window.open("https://wa.me/?text="+encodeURIComponent(text));
+}
+</script>
+
+</body>
+</html>

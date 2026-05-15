@@ -146,9 +146,10 @@
   <div class="nav">
     <button onclick="showPage('profile')">Dashboard</button>
     <button onclick="showPage('alur')">Alur Belajar</button>
-    <button onclick="showPage('tasks')">QUIZ</button>
+    <button onclick="showPage('tugas')">Tugas</button>
+    <button onclick="showPage('quiz')">QUIZ</button>
     <button onclick="showPage('stats')">Statistik</button>
-    <button onclick="showPage('belajar')">Tools</button>
+    <button onclick="showPage('tools')">Tools</button>
     <!-- <button onclick="alert('Sampai jumpa!')">Keluar</button> -->
   </div>
 
@@ -160,53 +161,67 @@
     </div>
 
     <div class="info"><strong>Usia:</strong> <span id="student-age">6 Tahun</span></div>
-    <div class="info"><strong>Level:</strong> <span class="level" id="student-level">? ? ? ?</span></div>
+    <div class="info"><strong>Level:</strong> <span class="level" id="student-level">Foundation</span></div>
     <div class="info"><strong>Hari Belajar:</strong> <span class="level" id="student-level">Selasa & Kamis</span></div>
     <div class="info"><strong>Jam Belajar:</strong> <span class="level" id="student-level">17.00 WITA</span></div>
   </div>
 
-  <!-- TUGAS -->
+  <!-- Alur Belajar -->
   <div id="alur" class="page-section hidden">
     <h2>Alur Belajar</h2>
     <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses alur belajar lebih baik . . .</div> -->
+    <div class="task">Perlu bimbingan orang tua untuk mengikuti alur belajar.</div>
     <div class="task">Ikuti Alur Belajar untuk mendapat pembelajaran yang maksimal...</div>
-    <div class="task">1.1. Cara Berkenalan: <a href="perkenalan.html">klik disini</a></div>
-    <div class="task">1.2. Cara memberi salam: <a href="memberi-salam.html">klik disini</a></div>
-    <div class="task">1.3. Bagian-bagian tubuh: <a href="bagian-tubuh.html">klik disini</a></div>
-    <div class="task">1.4. Latihan Alfabet: <a href="beec-game-edukasi-alfabet-satu/index.html">klik disini</a></div>
+    <div class="task">First English Class Meeting: <a href="alur-belajar/first-english-class-meeting.pdf">klik disini</a></div>
+    <div class="task">0.1. Opening & Closing Prayer: <a href="alur-belajar/opening-closing-prayer.pdf">klik disini</a></div>
+    <div class="task">0.2. Latihan Alfabet: <a href="alur-belajar/beec-game-edukasi-alfabet-satu/index.html">klik disini</a></div>
+    <!-- <div class="task">1.1. Cara Berkenalan: <a href="perkenalan.html">klik disini</a></div> -->
+    <!-- <div class="task">1.2. Cara memberi salam: <a href="memberi-salam.html">klik disini</a></div> -->
+    <!-- <div class="task">1.3. Bagian-bagian tubuh: <a href="bagian-tubuh.html">klik disini</a></div> -->
   </div>
 
-  <div id="tasks" class="page-section hidden">
-    <h2>QUIZ</h2>
+  <div id="tugas" class="page-section hidden">
+    <h2>Tugas</h2>
     <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Quiz . . .</div> -->
-    <div class="task">Mainkan Quiz untuk meningkatkan kemampuanmu secara mandiri . . .</div>
-    <div class="task">QUIZ Free Trial: <a href="beec-quiz-freetrial/index.html">klik di sini</a></div>
+    <div class="task">Perlu bimbingan orang tua untuk mengerjakan tugas.</div>
+    <div class="task">Kerjakan Tugas secara bertahap untuk hasil yang memuaskan. . .</div>
+    <div class="task">Tugas 1: <a href="tugas/tugas1-geistlich.pdf">klik di sini</a></div>
     <!-- <div class="task">1.1. QUIZ 1: <a href="beec-quiz-satu/index.html">klik di sini</a></div> -->
     <!-- <div class="task">1.2. Screenshot hasil Quiz 1 dan kirim ke nomor Admin.</div> -->
+  </div>
+
+  <div id="quiz" class="page-section hidden">
+    <h2>QUIZ</h2>
+    <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Quiz . . .</div> -->
+    <div class="task">Perlu bimbingan orang tua untuk mengerjakan quiz.</div>
+    <div class="task">Mainkan Quiz untuk meningkatkan kemampuanmu secara mandiri . . .</div>
+    <div class="task">QUIZ Free Trial: <a href="quiz/beec-quiz-freetrial/index.html">klik di sini</a></div>
+    <div class="task">1.1. QUIZ 1: <a href="quiz/beec-quiz-satu/index.html">klik di sini</a></div>
+    <div class="task">1.2. Screenshot hasil Quiz 1 dan kirim ke nomor Admin.</div>
   </div>
 
   <!-- STATISTIK -->
   <div id="stats" class="page-section hidden">
     <h2>Statistik Karakter</h2>
-    <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Statistik.......</div>
+    <!-- <div class="task">Silahkan lakukan tes kemampuan untuk mengakses Statistik.......</div> -->
     <div class="stat">
       <label>Intelegent</label>
-      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 17%; background: #BFA2DB;">17/100</div></div> -->
+      <div class="bar-bg"><div class="bar-fill" style="width: 45%; background: #BFA2DB;">45/100</div></div>
     </div>
     <div class="stat">
       <label>Strength</label>
-      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 12%; background: #FADADD;">12/100</div></div> -->
+      <div class="bar-bg"><div class="bar-fill" style="width: 40%; background: #FADADD;">40/100</div></div>
     </div>
     <div class="stat">
       <label>Agility</label>
-      <!-- <div class="bar-bg"><div class="bar-fill" style="width: 1%; background: #A0D8EF;">1/100</div></div> -->
+      <div class="bar-bg"><div class="bar-fill" style="width: 25%; background: #A0D8EF;">25/100</div></div>
     </div>
   </div>
 
-  <!-- Belajar -->
-   <div id="belajar" class="page-section hidden">
-    <div class="task">Lakukan tes kemampuan untuk mengakses Tools....</div>
-    <!-- <div class="task">Tools akan di-update sesuai kebutuhan....</div> -->
+  <!-- Tools -->
+   <div id="tools" class="page-section hidden">
+    <!-- <div class="task">Lakukan tes kemampuan untuk mengakses Tools....</div> -->
+    <div class="task">Tools akan di-update sesuai kebutuhan....</div>
     <!-- <label>Akor Gitar</label>
     <div class="chord">
       <a href="akor-gitar/chord.html">Play</a>
