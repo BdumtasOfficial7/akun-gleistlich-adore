@@ -1,0 +1,63 @@
+
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colors & Shapes Expanded</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:linear-gradient(#8fd3ff,#eef9ff,#fff3bf)}
+header{padding:14px;text-align:center;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font-size:28px;font-weight:bold}
+.wrap{max-width:520px;margin:auto;padding:10px}
+.cardbox{background:#ffffffdd;border-radius:20px;padding:12px;box-shadow:0 6px 16px #0002}
+#inst{font-size:1.25rem;text-align:center;margin:12px;font-weight:bold}
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item{aspect-ratio:1;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;
+font-size:2.8rem;box-shadow:0 3px 10px #0002;cursor:pointer;transition:.2s}
+.item:active{transform:scale(.92)}
+button{width:100%;padding:12px;border:none;border-radius:999px;background:#22c55e;color:#fff;font-weight:bold}
+.stats{display:flex;justify-content:space-between;margin-bottom:8px}
+</style></head><body>
+<header>🚂 Colors & Shapes Adventure</header>
+<div class="wrap"><div class="cardbox">
+<div class="stats"><b>⭐ <span id=s>0</span></b><b>🏆 <span id=r>1</span></b></div>
+<div id=inst></div>
+<button onclick="readInstr()">🔊 Listen Again</button>
+<div id=grid></div>
+</div></div>
+<script>
+const shapes=[["circle","●"],["square","■"],["triangle","▲"],["diamond","◆"],["star","★"],["heart","♥"],["pentagon","⬟"],["hexagon","⬢"],["octagon","⯃"],["rectangle","▭"],["oval","⬭"],["crescent","☾"],["cross","✚"],["arrow","➜"],["house","⌂"],["cloud","☁"],["sun","☀"],["moon","☽"],["drop","💧"],["lightning","⚡"]];
+const colors=["red","blue","green","yellow","orange","purple","pink","brown","black","white","gray","cyan","lime","navy","gold","silver","olive","turquoise","violet","coral"];
+let score=0,round=1,targetShape,targetColor,left=0;
+const $=i=>document.getElementById(i);
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function speak(t){let u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.cancel();speechSynthesis.speak(u);}
+function readInstr(){speak(`Find all the ${targetColor} ${targetShape[0]}s`)}
+function build(){
+ targetShape=rand(shapes);targetColor=rand(colors);left=5;
+ $("inst").innerHTML=`Find all the <span style="color:${targetColor}">${targetColor.toUpperCase()}</span> <b>${targetShape[0].toUpperCase()}S</b>`;
+ readInstr();
+ let arr=[];
+ for(let i=0;i<5;i++)arr.push({ok:true,s:targetShape,c:targetColor});
+ while(arr.length<18){
+   let s=rand(shapes),c=rand(colors);
+   if(s[0]==targetShape[0]&&c==targetColor)continue;
+   arr.push({ok:false,s,c});
+ }
+ arr.sort(()=>Math.random()-0.5);
+ $("grid").innerHTML="";
+ arr.forEach(it=>{
+  let d=document.createElement("div");d.className="item";
+  d.innerHTML=`<span style="color:${it.c}">${it.s[1]}</span>`;
+  d.onclick=()=>{
+    if(d.dataset.done)return; d.dataset.done=1;
+    if(it.ok){
+      d.style.visibility="hidden";score+=10;left--;$("s").textContent=score;speak("Excellent");
+      if(left==0){round++;$("r").textContent=round;setTimeout(build,400);}
+    } else {
+      d.animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:180});
+      speak("Try again");
+    }
+  };
+  $("grid").appendChild(d);
+ });
+}
+build();
+</script></body></html>

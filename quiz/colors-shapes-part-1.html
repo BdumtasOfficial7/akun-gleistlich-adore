@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Colors & Shapes Mobile</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(#87CEFA,#dff6ff,#fff6bf);
+overflow-x:hidden;
+}
+.cloud{
+position:fixed;font-size:36px;opacity:.8;animation:move 20s linear infinite;
+}
+.c1{top:10px;left:-60px}.c2{top:60px;left:-180px;animation-duration:28s}
+@keyframes move{to{transform:translateX(140vw)}}
+header{
+background:linear-gradient(90deg,#3b82f6,#8b5cf6);
+color:#fff;text-align:center;
+padding:14px;font-size:1.5rem;font-weight:bold;
+}
+.wrap{padding:10px;max-width:520px;margin:auto}
+.panel{
+background:rgba(255,255,255,.92);
+border-radius:20px;
+padding:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.15)
+}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.box{
+background:#fff;border-radius:14px;padding:8px;text-align:center;
+font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.1)
+}
+#inst{font-size:1.3rem;text-align:center;margin:14px 0;font-weight:bold}
+button{
+width:100%;padding:12px;border:none;border-radius:999px;
+background:#22c55e;color:#fff;font-size:1rem;font-weight:bold;
+}
+.grid{
+margin-top:12px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+.card{
+aspect-ratio:1;
+background:#fff;
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:3rem;
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+transition:.2s;
+user-select:none;
+}
+.card:active{transform:scale(.92)}
+</style>
+</head>
+<body>
+<div class="cloud c1">☁️</div><div class="cloud c2">☁️</div>
+<header>🚂 Colors & Shapes Fun</header>
+<div class="wrap">
+<div class="panel">
+<div class="stats">
+<div class="box">⭐ Score: <span id="score">0</span></div>
+<div class="box">🏆 Round: <span id="round">1</span></div>
+</div>
+<div id="inst"></div>
+<button onclick="readInstr()">🔊 Listen Again</button>
+<div id="grid" class="grid"></div>
+</div>
+</div>
+<script>
+const shapes=[["circle","●"],["square","■"],["triangle","▲"],["star","★"],["heart","♥"],["diamond","◆"]];
+const colors=["red","blue","green","orange","purple","gold","pink"];
+let score=0,round=1,targetShape,targetColor,left=0;
+const $=id=>document.getElementById(id);
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function speak(t){
+let u=new SpeechSynthesisUtterance(t);
+u.lang="en-US";
+speechSynthesis.cancel();
+speechSynthesis.speak(u);
+}
+function readInstr(){speak(`Find all the ${targetColor} ${targetShape[0]}s`);}
+function newGame(){
+targetShape=rand(shapes);
+targetColor=rand(colors);
+left=4;
+$("inst").innerHTML=`Find all the <span style="color:${targetColor}">${targetColor.toUpperCase()}</span> ${targetShape[0].toUpperCase()}S`;
+readInstr();
+let items=[];
+for(let i=0;i<4;i++)items.push({ok:true,s:targetShape,c:targetColor});
+while(items.length<15){
+ let s=rand(shapes),c=rand(colors);
+ if(s[0]==targetShape[0]&&c==targetColor)continue;
+ items.push({ok:false,s,c});
+}
+items.sort(()=>Math.random()-0.5);
+$("grid").innerHTML="";
+items.forEach(it=>{
+ let d=document.createElement("div");
+ d.className="card";
+ d.innerHTML=`<span style="color:${it.c}">${it.s[1]}</span>`;
+ d.onclick=()=>{
+  if(d.dataset.done)return;
+  d.dataset.done=1;
+  if(it.ok){
+    d.style.visibility="hidden";
+    score+=10;left--;
+    $("score").textContent=score;
+    speak("Excellent");
+    if(left==0){
+      round++;
+      $("round").textContent=round;
+      setTimeout(newGame,400);
+    }
+  }else{
+    d.style.background="#fee2e2";
+    d.animate([{transform:"translateX(-4px)"},{transform:"translateX(4px)"},{transform:"translateX(0)"}],{duration:180});
+    speak("Try again");
+  }
+ }
+ $("grid").appendChild(d);
+});
+}
+newGame();
+</script>
+</body>
+</html>
