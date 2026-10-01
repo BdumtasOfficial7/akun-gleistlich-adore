@@ -1,0 +1,42 @@
+
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Listening Practice</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}header{background:#2563eb;color:#fff;padding:15px;text-align:center}
+.container{max-width:900px;margin:auto;padding:20px}.card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 8px #0002}
+input,textarea{width:100%;padding:10px;margin:8px 0}button{padding:10px 18px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head><body>
+<header><h2>Listening Practice</h2></header>
+<div class="container"><div class="card">
+<label>Name</label><input id="name">
+<label>Class</label><input id="cls">
+<video controls width="100%">
+<source src="listening1.mp4" type="video/mp4">
+</video>
+<h3>Questions</h3>
+<p>1. Watch the video carefully and write down as many verb as you can find in the video!</p>
+<textarea id="a1"></textarea>
+<p>2. Watch the video carefully and write down as many nouns as you can find in the video!</p>
+<textarea id="a2"></textarea>
+<button onclick="makePDF()">Download PDF</button>
+<button onclick="wa()">Open WhatsApp Admin</button>
+</div></div>
+<script>
+async function makePDF(){
+ const {jsPDF}=window.jspdf; const d=new jsPDF();
+ const studentName = document.getElementById("name").value;
+ const studentClass = document.getElementById("cls").value;
+
+ d.text("Listening Test",20,20);
+ d.text("Name: "+studentName,20,35);
+ d.text("Class: "+studentClass,20,45);
+ d.text("Q1: "+a1.value,20,60,{maxWidth:170});
+ d.text("Q2: "+a2.value,20,90,{maxWidth:170});
+ d.save("Listening_Result_"+name.value+".pdf");
+}
+function wa(){
+ window.open("https://wa.me/6282395965373?text=I have completed the listening test. I will attach the PDF.","_blank");
+}
+</script></body></html>

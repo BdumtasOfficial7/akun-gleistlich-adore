@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4F8CFF">
+<title>Bdumtas English Vocabulary</title>
+<style>
+:root{
+  --primary:#4f8cff; --primary2:#356fd4; --bg:#f4f8ff; --card:#fff;
+  --text:#243047; --muted:#72809a; --success:#2dbd72; --danger:#ef6262;
+  --yellow:#ffc857; --border:#e3eaf5; --shadow:0 10px 30px rgba(47,76,120,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf4ff,#fff8df);color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{border:0;cursor:pointer}
+.app{max-width:620px;margin:auto;min-height:100vh;background:var(--bg);box-shadow:0 0 30px rgba(0,0,0,.06)}
+header{background:linear-gradient(135deg,var(--primary),#72a8ff);color:#fff;padding:20px;border-radius:0 0 28px 28px}
+.header-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+h1{font-size:23px}.subtitle{opacity:.9;margin-top:6px;font-size:14px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.stat{background:rgba(255,255,255,.2);padding:8px 11px;border-radius:16px;font-size:13px}
+.content{padding:18px}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+.welcome{text-align:center;padding:12px 0 20px}.welcome-emoji{font-size:76px}.welcome h2{margin:8px 0}.welcome p{color:var(--muted)}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.menu-btn{background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px 10px;color:var(--text);box-shadow:var(--shadow)}
+.menu-btn span{display:block;font-size:34px;margin-bottom:8px}
+.primary,.secondary,.danger{border-radius:15px;padding:13px 16px;font-weight:700}
+.primary{background:var(--primary);color:#fff}.primary:hover{background:var(--primary2)}
+.secondary{background:#edf3ff;color:var(--primary2)}.danger{background:#fff0f0;color:#d84e4e}
+.full{width:100%;margin-top:12px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:16px}.topbar h2{flex:1;font-size:22px}
+.back{width:42px;height:42px;border-radius:13px;background:#fff;border:1px solid var(--border)}
+.categories{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px}
+.cat-btn{white-space:nowrap;padding:9px 13px;border-radius:20px;background:#fff;border:1px solid var(--border);color:var(--text)}
+.cat-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.flashcard{text-align:center}.category{display:inline-block;background:#eaf2ff;color:var(--primary2);padding:7px 12px;border-radius:20px;font-size:13px;font-weight:700}
+.word-image{width:100%;height:250px;object-fit:contain;display:block;margin:12px auto;border-radius:18px;background:#f7faff}
+.word{font-size:38px;font-weight:800}.translation{font-size:19px;color:var(--muted);margin-top:6px}.pronunciation{color:var(--primary2);margin-top:6px}
+.controls{display:flex;gap:8px;margin-top:12px}.controls>*{flex:1}
+.dots{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+.progress-wrap{height:11px;background:#e8edf5;border-radius:20px;overflow:hidden;margin:8px 0 18px}.progress{height:100%;background:var(--primary);width:0%;transition:.25s}
+.quiz-image{width:230px;height:230px;object-fit:contain;display:block;margin:5px auto 18px;border-radius:20px;background:#f7faff}
+.question{text-align:center;font-size:22px;font-weight:800;margin-bottom:16px}
+.answers{display:grid;gap:10px}.answer{padding:15px;border-radius:15px;background:#f5f7fb;border:2px solid transparent;font-weight:700;color:var(--text)}
+.answer.correct{background:#e6faef;border-color:var(--success)}.answer.wrong{background:#fff0f0;border-color:var(--danger)}
+.answer:disabled{cursor:default}
+.listen-card{text-align:center}.speaker{font-size:72px;margin:15px}.listen-note{color:var(--muted);margin-bottom:12px}
+.result{text-align:center;padding:18px}.result-icon{font-size:78px}.score{font-size:38px;font-weight:800;color:var(--primary);margin:10px}
+.progress-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f7faff;border-radius:18px;padding:18px;text-align:center}.metric b{display:block;font-size:28px;margin-top:6px;color:var(--primary)}
+.form-grid{display:grid;gap:12px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;padding:13px;border:1px solid var(--border);border-radius:13px;background:#fff}
+.preview{width:100%;height:180px;object-fit:contain;background:#f7faff;border-radius:15px;margin-top:8px;display:none}
+.admin-list{display:grid;gap:10px;margin-top:15px}.vocab-row{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:16px;padding:10px}
+.thumb{width:55px;height:55px;object-fit:cover;border-radius:10px;background:#f3f6fb}.vocab-info{flex:1;min-width:0}.vocab-info b{display:block}.vocab-info small{color:var(--muted)}
+.empty{padding:25px;text-align:center;color:var(--muted)}
+footer{text-align:center;padding:20px;color:#9aa6b9;font-size:12px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);background:#243047;color:#fff;padding:12px 16px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;z-index:10}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hidden{display:none!important}
+@media(max-width:430px){.menu{grid-template-columns:1fr 1fr}.word{font-size:32px}.word-image{height:220px}.content{padding:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>🌈 Bdumtas English Vocabulary</h1>
+      <div class="subtitle">Learn • Listen • Play • Remember</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat">⭐ XP: <b id="xp">0</b></div>
+    <div class="stat">🏆 Level: <b id="level">1</b></div>
+    <div class="stat">🔥 Streak: <b id="streak">0</b></div>
+  </div>
+</header>
+
+<main class="content">
+<section id="home" class="screen active">
+  <div class="welcome">
+    <div class="welcome-emoji">🧒📚</div>
+    <h2>Hello, Little Learner!</h2>
+    <p>Let's learn English vocabulary together.</p>
+  </div>
+  <div class="menu">
+    <button class="menu-btn" onclick="openFlashcards()"><span>🃏</span>Flashcards</button>
+    <button class="menu-btn" onclick="startQuiz()"><span>🎯</span>Vocabulary Quiz</button>
+    <button class="menu-btn" onclick="startListening()"><span>🔊</span>Listen & Choose</button>
+    <button class="menu-btn" onclick="showProgress()"><span>🏆</span>My Progress</button>
+    <button class="menu-btn" onclick="openAdmin()"><span>🛠️</span>Vocabulary Manager</button>
+    <button class="menu-btn" onclick="speak('Welcome to Bdumtas English Course!')"><span>🗣️</span>Practice Sound</button>
+  </div>
+</section>
+
+<section id="flashcards" class="screen">
+  <div class="topbar"><button class="back" onclick="goHome()">←</button><h2>🃏 Flashcards</h2></div>
+  <div id="categoryButtons" class="categories"></div>
+  <div class="card flashcard">
+    <div class="category" id="fcCategory">Animals</div>
+    <img id="fcImage" class="word-image" alt="Vocabulary image">
+    <div class="word" id="fcWord">Dog</div>
+    <div class="translation" id="fcTranslation">Anjing</div>
+    <div class="pronunciation" id="fcPronunciation">/dɔːɡ/</div>
+    <button class="primary full" onclick="speakCurrent()">🔊 Listen</button>
+    <div class="controls">
+      <button class="secondary" onclick="previousCard()">⬅️ Previous</button>
+      <button class="secondary" onclick="nextCard()">Next ➡️</button>
+    </div>
+    <div class="dots" id="cardCounter"></div>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <div class="topbar"><button class="back" onclick="goHome()">←</button><h2>🎯 Vocabulary Quiz</h2></div>
+  <div class="progress-wrap"><div class="progress" id="quizProgress"></div></div>
+  <div class="card">
+    <img id="quizImage" class="quiz-image" alt="Question image">
+    <div class="question" id="quizQuestion">What is this?</div>
+    <div class="answers" id="answers"></div>
+  </div>
+</section>
+
+<section id="listening" class="screen">
+  <div class="topbar"><button class="back" onclick="goHome()">←</button><h2>🔊 Listen & Choose</h2></div>
+  <div class="card listen-card">
+    <div class="speaker">🔊</div>
+    <p class="listen-note">Listen to the word, then choose the correct answer.</p>
+    <button class="primary full" onclick="playListeningWord()">🔊 PLAY WORD</button>
+    <div class="answers" id="listenAnswers" style="margin-top:15px"></div>
+  </div>
+</section>
+
+<section id="result" class="screen">
+  <div class="card result">
+    <div class="result-icon">🎉</div>
+    <h2>Great Job!</h2>
+    <div class="score"><span id="finalScore">0</span> / <span id="totalQuestions">5</span></div>
+    <p id="resultMessage">Keep practicing!</p>
+    <button class="primary full" onclick="startQuiz()">🔄 Play Again</button>
+    <button class="secondary full" onclick="goHome()">🏠 Home</button>
+  </div>
+</section>
+
+<section id="progressScreen" class="screen">
+  <div class="topbar"><button class="back" onclick="goHome()">←</button><h2>🏆 My Progress</h2></div>
+  <div class="progress-grid">
+    <div class="metric">⭐ XP<b id="progressXP">0</b></div>
+    <div class="metric">🏆 Level<b id="progressLevel">1</b></div>
+    <div class="metric">📚 Learned<b id="wordsLearned">0</b></div>
+    <div class="metric">🔥 Streak<b id="progressStreak">0</b></div>
+  </div>
+  <button class="danger full" onclick="resetProgress()">Reset Progress</button>
+</section>
+
+<section id="admin" class="screen">
+  <div class="topbar"><button class="back" onclick="goHome()">←</button><h2>🛠️ Vocabulary Manager</h2></div>
+  <div class="card">
+    <p style="color:var(--muted);font-size:14px;margin-bottom:14px">
+      Add your own word and image. Images selected here are stored in this browser.
+      For a permanent website, place image files in your <b>images</b> folder and use the file path.
+    </p>
+    <div class="form-grid">
+      <div class="field"><label>English Word</label><input id="newWord" placeholder="Example: Elephant"></div>
+      <div class="field"><label>Indonesian Translation</label><input id="newTranslation" placeholder="Example: Gajah"></div>
+      <div class="field"><label>Category</label>
+        <select id="newCategory">
+          <option>Animals</option><option>Fruits</option><option>Colors</option>
+          <option>Family</option><option>Body Parts</option><option>School</option>
+          <option>Daily Activities</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Pronunciation (optional)</label><input id="newPronunciation" placeholder="/ˈelɪfənt/"></div>
+      <div class="field"><label>Image File</label><input id="imageFile" type="file" accept="image/*" onchange="previewImage()"></div>
+      <img id="imagePreview" class="preview" alt="Preview">
+      <button class="primary" onclick="addVocabulary()">➕ Add Vocabulary</button>
+    </div>
+  </div>
+  <div class="admin-list" id="adminList"></div>
+</section>
+</main>
+
+<footer>Bdumtas English Course • English Vocabulary Tools</footer>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+/* ==========================================================
+   VOCABULARY DATA
+   ----------------------------------------------------------
+   Untuk website permanen:
+   1. Buat folder "images" di samping file HTML.
+   2. Masukkan gambar Anda.
+   3. Ubah "image" menjadi contoh:
+      image: "images/dog.jpg"
+   ========================================================== */
+
+const DEFAULT_VOCABULARY = [
+  {word:"Dog",translation:"Anjing",image:"images/dog.png",category:"Animals",pronunciation:"/dɔːɡ/"},
+  {word:"Cat",translation:"Kucing",image:"images/cat.png",category:"Animals",pronunciation:"/kæt/"},
+  {word:"Bird",translation:"Burung",image:"images/bird.png",category:"Animals",pronunciation:"/bɜːrd/"},
+  {word:"Fish",translation:"Ikan",image:"images/fish.png",category:"Animals",pronunciation:"/fɪʃ/"},
+  {word:"Cow",translation:"Sapi",image:"images/sapi.jpg",category:"Animals",pronunciation:"/kau/"},
+  {word:"Apple",translation:"Apel",image:"images/apple.png",category:"Fruits",pronunciation:"/ˈæpəl/"},
+  {word:"Banana",translation:"Pisang",image:"images/banana.png",category:"Fruits",pronunciation:"/bəˈnænə/"},
+  {word:"Orange",translation:"Jeruk",image:"images/orange.png",category:"Fruits",pronunciation:"/ˈɒrɪndʒ/"},
+  {word:"Grape",translation:"Anggur",image:"images/grape.png",category:"Fruits",pronunciation:"/greip/"},
+  {word:"Mango",translation:"Mangga",image:"images/mango.png",category:"Fruits",pronunciation:"/meng-gou/"},
+  {word:"Red",translation:"Merah",image:"images/red.jpg",category:"Colors",pronunciation:"/red/"},
+  {word:"Blue",translation:"Biru",image:"images/blue.jpg",category:"Colors",pronunciation:"/bluː/"},
+  {word:"Yellow",translation:"Kuning",image:"images/yellow.png",category:"Colors",pronunciation:"/ˈjeləʊ/"},
+  {word:"Green",translation:"Hijau",image:"images/green.png",category:"Colors",pronunciation:"/ɡriːn/"},
+  {word:"Mother",translation:"Ibu",image:"images/mother.png",category:"Family",pronunciation:"/ˈmʌðər/"},
+  {word:"Father",translation:"Ayah",image:"images/father.png",category:"Family",pronunciation:"/ˈfɑːðər/"},
+  {word:"Brother",translation:"Saudara laki-laki",image:"images/brother.png",category:"Family",pronunciation:"/ˈbrʌðər/"},
+  {word:"Sister",translation:"Saudara perempuan",image:"images/sister.png",category:"Family",pronunciation:"/ˈsɪstər/"},
+  {word:"Baby",translation:"Bayi",image:"images/baby.png",category:"Family",pronunciation:"/bei-bi/"},
+  {word:"Sofa",translation:"Sofa",image:"images/sofa.png",category:"Living Room",pronunciation:"/sou-fa/"},
+  {word:"Chair",translation:"Kursi",image:"images/chair.png",category:"Living Room",pronunciation:"/cher/"},
+  {word:"Table",translation:"Meja",image:"images/table.jpg",category:"Living Room",pronunciation:"/tei-bel/"},
+  {word:"TV",translation:"Televisi",image:"images/tv.png",category:"Living Room",pronunciation:"/ti-vi/"},
+  {word:"Lamp",translation:"Lampu",image:"images/lamp.png",category:"Living Room",pronunciation:"/lemp/"},
+  {word:"Bed",translation:"Tempat tidur",image:"images/bed.png",category:"Bedroom",pronunciation:"/bed/"},
+  {word:"Pillow",translation:"Bantal",image:"images/pillow.png",category:"Bedroom",pronunciation:"/pi-lou/"},
+  {word:"Blanket",translation:"Selimut",image:"images/blanket.png",category:"Bedroom",pronunciation:"/bleng-ket/"},
+  {word:"Book",translation:"Buku",image:"images/book.png",category:"Bedroom",pronunciation:"/buk/"},
+  {word:"Toy",translation:"Mainan",image:"images/toy.png",category:"Bedroom",pronunciation:"/toi/"}
+];
+
+let vocabulary = JSON.parse(localStorage.getItem("bdumtasVocabulary") || "null") || DEFAULT_VOCABULARY;
+let xp = Number(localStorage.getItem("bdumtasXP")) || 0;
+let streak = Number(localStorage.getItem("bdumtasStreak")) || 0;
+let learned = Number(localStorage.getItem("bdumtasLearned")) || 0;
+
+let currentCategory = "All";
+let flashIndex = 0;
+let quizQuestions = [];
+let quizIndex = 0;
+let quizScore = 0;
+let listeningAnswer = null;
+
+function saveData(){
+  localStorage.setItem("bdumtasVocabulary", JSON.stringify(vocabulary));
+  localStorage.setItem("bdumtasXP", xp);
+  localStorage.setItem("bdumtasStreak", streak);
+  localStorage.setItem("bdumtasLearned", learned);
+  updateStats();
+}
+
+function updateStats(){
+  const level = Math.floor(xp/100)+1;
+  document.getElementById("xp").textContent=xp;
+  document.getElementById("level").textContent=level;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("progressXP").textContent=xp;
+  document.getElementById("progressLevel").textContent=level;
+  document.getElementById("wordsLearned").textContent=learned;
+  document.getElementById("progressStreak").textContent=streak;
+}
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function goHome(){showScreen("home");}
+
+function speak(text){
+  if(!("speechSynthesis" in window)){
+    toast("Text-to-Speech tidak tersedia di browser ini.");
+    return;
+  }
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="en-US"; u.rate=.72; u.pitch=1.08;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>el.classList.remove("show"),2200);
+}
+
+/* ---------- FLASHCARDS ---------- */
+function getFiltered(){
+  return currentCategory==="All" ? vocabulary : vocabulary.filter(v=>v.category===currentCategory);
+}
+function renderCategories(){
+  const box=document.getElementById("categoryButtons");
+  const cats=["All",...new Set(vocabulary.map(v=>v.category))];
+  box.innerHTML="";
+  cats.forEach(cat=>{
+    const b=document.createElement("button");
+    b.className="cat-btn"+(cat===currentCategory?" active":"");
+    b.textContent=cat==="All"?"📚 All":cat;
+    b.onclick=()=>{currentCategory=cat;flashIndex=0;renderCategories();displayFlashcard();};
+    box.appendChild(b);
+  });
+}
+function openFlashcards(){
+  currentCategory="All";flashIndex=0;renderCategories();displayFlashcard();showScreen("flashcards");
+}
+function displayFlashcard(){
+  const list=getFiltered();
+  if(!list.length){document.getElementById("cardCounter").textContent="No vocabulary";return;}
+  const item=list[flashIndex];
+  const img=document.getElementById("fcImage");
+  img.src=item.image;img.alt=item.word;
+  img.onerror=()=>{img.onerror=null;img.src=placeholderData(item.word);};
+  document.getElementById("fcCategory").textContent=item.category;
+  document.getElementById("fcWord").textContent=item.word;
+  document.getElementById("fcTranslation").textContent=item.translation;
+  document.getElementById("fcPronunciation").textContent=item.pronunciation||"";
+  document.getElementById("cardCounter").textContent=`${flashIndex+1} / ${list.length}`;
+}
+function nextCard(){const list=getFiltered();if(!list.length)return;flashIndex=(flashIndex+1)%list.length;displayFlashcard();}
+function previousCard(){const list=getFiltered();if(!list.length)return;flashIndex=(flashIndex-1+list.length)%list.length;displayFlashcard();}
+function speakCurrent(){const list=getFiltered();if(list.length)speak(list[flashIndex].word);}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(){
+  if(vocabulary.length<4){toast("Tambahkan minimal 4 vocabulary untuk quiz.");return;}
+  quizQuestions=shuffle(vocabulary).slice(0,Math.min(10,vocabulary.length));
+  quizIndex=0;quizScore=0;showScreen("quiz");showQuizQuestion();
+}
+function showQuizQuestion(){
+  if(quizIndex>=quizQuestions.length){finishQuiz();return;}
+  const current=quizQuestions[quizIndex];
+  const img=document.getElementById("quizImage");
+  img.src=current.image;img.alt=current.word;
+  img.onerror=()=>{img.onerror=null;img.src=placeholderData(current.word);};
+  document.getElementById("quizQuestion").textContent="What is this?";
+  document.getElementById("quizProgress").style.width=(quizIndex/quizQuestions.length*100)+"%";
+  const options=shuffle([current,...shuffle(vocabulary.filter(v=>v.word!==current.word)).slice(0,3)]);
+  const box=document.getElementById("answers");box.innerHTML="";
+  options.forEach(opt=>{
+    const b=document.createElement("button");b.className="answer";b.textContent=opt.word;
+    b.onclick=()=>checkQuiz(b,opt.word,current.word);
+    box.appendChild(b);
+  });
+}
+function checkQuiz(button,selected,correct){
+  document.querySelectorAll("#answers .answer").forEach(b=>b.disabled=true);
+  if(selected===correct){
+    button.classList.add("correct");quizScore++;xp+=10;learned++;streak++;speak("Correct!");
+  }else{
+    button.classList.add("wrong");streak=0;
+    document.querySelectorAll("#answers .answer").forEach(b=>{if(b.textContent===correct)b.classList.add("correct");});
+    speak("Try again");
+  }
+  saveData();
+  setTimeout(()=>{quizIndex++;showQuizQuestion();},900);
+}
+function finishQuiz(){
+  document.getElementById("finalScore").textContent=quizScore;
+  document.getElementById("totalQuestions").textContent=quizQuestions.length;
+  document.getElementById("quizProgress").style.width="100%";
+  document.getElementById("resultMessage").textContent=
+    quizScore===quizQuestions.length?"Perfect! Amazing! 🌟":
+    quizScore>=3?"Great job! Keep practicing! 😊":"Good try! Let's practice again! 💪";
+  showScreen("result");
+}
+
+/* ---------- LISTENING ---------- */
+function startListening(){
+  if(vocabulary.length<4){toast("Tambahkan minimal 4 vocabulary untuk game.");return;}
+  showScreen("listening");createListeningQuestion();
+}
+function createListeningQuestion(){
+  listeningAnswer=vocabulary[Math.floor(Math.random()*vocabulary.length)];
+  const options=shuffle([listeningAnswer,...shuffle(vocabulary.filter(v=>v.word!==listeningAnswer.word)).slice(0,3)]);
+  const box=document.getElementById("listenAnswers");box.innerHTML="";
+  options.forEach(opt=>{
+    const b=document.createElement("button");b.className="answer";b.textContent=opt.word;
+    b.onclick=()=>{
+      document.querySelectorAll("#listenAnswers .answer").forEach(x=>x.disabled=true);
+      if(opt.word===listeningAnswer.word){
+        b.classList.add("correct");xp+=10;learned++;streak++;speak("Excellent!");
+      }else{
+        b.classList.add("wrong");streak=0;
+        document.querySelectorAll("#listenAnswers .answer").forEach(x=>{if(x.textContent===listeningAnswer.word)x.classList.add("correct");});
+        speak("Try again");
+      }
+      saveData();setTimeout(createListeningQuestion,1000);
+    };
+    box.appendChild(b);
+  });
+  setTimeout(playListeningWord,350);
+}
+function playListeningWord(){if(listeningAnswer)speak(listeningAnswer.word);}
+
+/* ---------- PROGRESS ---------- */
+function showProgress(){updateStats();showScreen("progressScreen");}
+function resetProgress(){
+  if(confirm("Reset XP, streak, and learned words?")){
+    xp=0;streak=0;learned=0;saveData();toast("Progress has been reset.");
+  }
+}
+
+/* ---------- ADMIN / IMAGE ---------- */
+function openAdmin(){renderAdminList();showScreen("admin");}
+function previewImage(){
+  const file=document.getElementById("imageFile").files[0];
+  const img=document.getElementById("imagePreview");
+  if(!file){img.style.display="none";return;}
+  const reader=new FileReader();
+  reader.onload=e=>{img.src=e.target.result;img.style.display="block";};
+  reader.readAsDataURL(file);
+}
+function addVocabulary(){
+  const word=document.getElementById("newWord").value.trim();
+  const translation=document.getElementById("newTranslation").value.trim();
+  const category=document.getElementById("newCategory").value;
+  const pronunciation=document.getElementById("newPronunciation").value.trim();
+  const file=document.getElementById("imageFile").files[0];
+  if(!word||!translation){toast("Isi English Word dan Translation.");return;}
+  if(file){
+    const reader=new FileReader();
+    reader.onload=e=>saveNewVocabulary(word,translation,category,pronunciation,e.target.result);
+    reader.readAsDataURL(file);
+  }else{
+    saveNewVocabulary(word,translation,category,pronunciation,"");
+  }
+}
+function saveNewVocabulary(word,translation,category,pronunciation,image){
+  vocabulary.push({word,translation,category,pronunciation,image:image||"images/placeholder.jpg"});
+  saveData();clearForm();renderAdminList();toast("Vocabulary berhasil ditambahkan!");
+}
+function clearForm(){
+  ["newWord","newTranslation","newPronunciation"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("imageFile").value="";
+  document.getElementById("imagePreview").style.display="none";
+}
+function renderAdminList(){
+  const box=document.getElementById("adminList");box.innerHTML="";
+  if(!vocabulary.length){box.innerHTML='<div class="empty">Belum ada vocabulary.</div>';return;}
+  vocabulary.forEach((v,i)=>{
+    const row=document.createElement("div");row.className="vocab-row";
+    const img=document.createElement("img");img.className="thumb";img.src=v.image;img.alt=v.word;
+    img.onerror=()=>{img.onerror=null;img.src=placeholderData(v.word);};
+    const info=document.createElement("div");info.className="vocab-info";
+    info.innerHTML=`<b>${escapeHtml(v.word)}</b><small>${escapeHtml(v.translation)} • ${escapeHtml(v.category)}</small>`;
+    const del=document.createElement("button");del.className="danger";del.textContent="🗑️";
+    del.onclick=()=>deleteVocabulary(i);
+    row.append(img,info,del);box.appendChild(row);
+  });
+}
+function deleteVocabulary(index){
+  if(confirm(`Delete "${vocabulary[index].word}"?`)){
+    vocabulary.splice(index,1);saveData();renderAdminList();toast("Vocabulary deleted.");
+  }
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function placeholderData(text){
+  const safe=String(text).slice(0,16);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="500" height="400"><rect width="100%" height="100%" fill="#edf3ff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="42" fill="#356fd4">${safe}</text></svg>`;
+  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
+}
+
+/* ---------- START ---------- */
+updateStats();
+renderCategories();
+</script>
+</body>
+</html>
