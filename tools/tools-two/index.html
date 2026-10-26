@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6558d3">
+  <title>Vocabulary Adventure | Practical Exam Age 6</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Vocabulary Adventure Home">
+      <span class="brand-icon">🎒</span>
+      <span><strong>Vocabulary</strong><small>ADVENTURE</small></span>
+    </a>
+    <div class="top-actions">
+      <div class="streak-pill" title="Your points"><span>⭐</span><b id="totalStars">0</b><small>stars</small></div>
+      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="welcome-card">
+      <div class="welcome-copy">
+        <p class="eyebrow">LET'S LEARN AND PLAY!</p>
+        <h1>Welcome to your<br><span>Vocabulary Adventure!</span></h1>
+        <p>Learn English words, listen to them, and play fun games to get ready for your Practical Exam.</p>
+        <div class="welcome-badges"><span>🎧 Listen</span><span>🧠 Remember</span><span>🏆 Earn stars</span></div>
+      </div>
+      <div class="welcome-art" aria-hidden="true"><div class="sun"></div><div class="book">📚</div><div class="pencil">✏️</div><div class="star star-a">⭐</div><div class="star star-b">✨</div></div>
+    </section>
+
+    <section class="progress-section">
+      <div class="progress-heading"><div><p class="eyebrow">YOUR LEARNING JOURNEY</p><h2>My progress</h2></div><div class="progress-number"><strong id="progressPercent">0%</strong><span>mastered</span></div></div>
+      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <p class="progress-note" id="progressNote">Start learning to fill your progress bar!</p>
+    </section>
+
+    <section class="section-heading">
+      <div><p class="eyebrow">CHOOSE YOUR WORLD</p><h2>What do you want to learn?</h2></div>
+      <p class="section-hint">Tap a card to begin.</p>
+    </section>
+    <section id="categoryGrid" class="category-grid" aria-label="Vocabulary categories"></section>
+
+    <section class="game-panel" id="gamePanel">
+      <div class="game-panel-head">
+        <div><p class="eyebrow">LET'S PRACTICE</p><h2 id="gameTitle">Pick a category above</h2></div>
+        <button class="close-game" id="closeGame" type="button" aria-label="Close game">✕</button>
+      </div>
+      <div class="mode-tabs" role="tablist" aria-label="Learning mode">
+        <button class="mode-tab active" data-mode="learn" role="tab">📖 Learn</button>
+        <button class="mode-tab" data-mode="quiz" role="tab">🎯 Quiz</button>
+        <button class="mode-tab" data-mode="match" role="tab">🧩 Match</button>
+        <button class="mode-tab" data-mode="spell" role="tab">🔤 Spell</button>
+      </div>
+      <div id="gameContent" class="game-content">
+        <div class="empty-state"><div>🗺️</div><h3>Your adventure starts here!</h3><p>Choose one of the seven topics above.</p></div>
+      </div>
+    </section>
+
+    <section class="exam-tips">
+      <div class="tips-icon">💡</div><div><h3>Exam tip!</h3><p>Practice for 10–15 minutes each day. Say the words out loud. It is okay to make mistakes—keep trying!</p></div>
+    </section>
+    <footer><p>Made for young English learners • Practical Exam Study Game</p><p class="footer-small">Words are shown in English with Indonesian meanings. Some extra words are for optional practice.</p></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
